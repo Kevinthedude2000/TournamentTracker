@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/mongoose": "^5.11.97",
+    "inversify": "^6.2.2",
+    "mongoose": "^8.10.0",
+    "reflect-metadata": "^0.2.2"
+  }
+}
