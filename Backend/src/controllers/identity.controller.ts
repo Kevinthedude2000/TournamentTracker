@@ -1,27 +1,28 @@
 import * as express from "express";
 import {
-  interfaces,
   controller,
-  httpGet,
   httpPost,
   httpDelete,
   request,
-  queryParam,
   response,
   requestParam,
+  BaseHttpController,
 } from "inversify-express-utils";
 import { injectable, inject } from "inversify";
 import { TYPES } from "../dependency_injection";
-import { UserService } from "../services/implementations/user.service";
 import { IdentityService } from "../services/implementations/identity.service";
+import { authenticate } from "../decorators/authorize.decorator";
 
 @controller("/identity")
-export class IdentityController implements interfaces.Controller {
+export class IdentityController extends BaseHttpController {
   constructor(
     @inject(TYPES.IdentityService) private identityService: IdentityService,
-  ) {}
+  ) {
+    super();
+  }
 
   @httpPost("/generateJWT")
+  @authenticate()
   private async create(
     @request() req: express.Request,
     @response() res: express.Response,
@@ -36,18 +37,5 @@ export class IdentityController implements interfaces.Controller {
     // } catch (err) {
     //   res.status(400).json({ error: err.message });
     // }
-  }
-
-  @httpDelete("/:id")
-  private delete(
-    @requestParam("id") id: string,
-    @response() res: express.Response,
-  ): Promise<void> {
-    return this.fooService
-      .delete(id)
-      .then(() => res.sendStatus(204))
-      .catch((err: Error) => {
-        res.status(400).json({ error: err.message });
-      });
   }
 }
