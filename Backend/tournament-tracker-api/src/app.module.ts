@@ -2,16 +2,17 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
-import { User } from './entities/user.entity';
+import { UsersModule } from './users/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'test', // Path for database
-      entities: [User],
+      database: './../../Database/tournament-engine.db', // Path for database
       synchronize: true,
+      autoLoadEntities: true,
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
