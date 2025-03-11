@@ -12,8 +12,12 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  public async get(id: number): Promise<User | null> {
-    return await this.userRepository.findOneBy({ id });
+  public async get(userId: number): Promise<User | null> {
+    return await this.userRepository.findOneBy({ userId });
+  }
+
+  public async getBy(emailAddress: string): Promise<User | null> {
+    return await this.userRepository.findOneBy({ emailAddress });
   }
 
   public async create(createUserDto: CreateUserDto): Promise<User> {
@@ -26,7 +30,7 @@ export class UsersService {
   }
 
   public async update(
-    id: number,
+    userId: number,
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult> {
     const user = new User();
@@ -35,10 +39,10 @@ export class UsersService {
     user.firstName = updateUserDto.firstName;
     user.lastName = updateUserDto.lastName;
 
-    return await this.userRepository.update(id, user);
+    return await this.userRepository.update(userId, user);
   }
 
-  public async delet(id: number): Promise<void> {
-    await this.userRepository.delete(id);
+  public async delet(userId: number): Promise<void> {
+    await this.userRepository.delete(userId);
   }
 }
