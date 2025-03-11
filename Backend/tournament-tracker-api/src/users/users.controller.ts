@@ -15,7 +15,7 @@ import { User } from './user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateResult } from 'typeorm';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
 
   constructor(private readonly usersService: UsersService) {}
@@ -31,15 +31,9 @@ export class UserController {
   }
 
   @Patch(':id')
-  public updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UpdateResult> {
+  public updateUser( @Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     return this.usersService.update(id, updateUserDto);
   }
-
-  @Put()
-  public replaceUser() {}
 
   @Delete(':id')
   public deleteUser(@Param('id') id: number): Promise<void> {

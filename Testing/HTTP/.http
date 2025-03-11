@@ -1,9 +1,0 @@
-GET http://localhost:3000/users/1
-
-POST http://localhost:3000/users
-Content-Type: application/json
-{
-    "firstName": "John",
-    "lastName": "Smith",
-    "email": "j.smith@test.com"
-}

@@ -30,6 +30,8 @@ export class UsersService {
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult> {
     const user = new User();
+    console.log('updateUserDto: ', updateUserDto);
+    console.log('user: ', user);
     user.firstName = updateUserDto.firstName;
     user.lastName = updateUserDto.lastName;
 
