@@ -6,7 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
-  Post
+  Post,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,12 +15,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateResult } from 'typeorm';
 
 @Controller('users')
-export class UserController {
+export class UsersController {
 
   constructor(private readonly usersService: UsersService) {}
 
   @Get(':id')
-  public getUser(@Param('id', ParseIntPipe) userId: number): Promise<User | null> {
+  public getUser(
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<User | null> {
     return this.usersService.get(userId);
   }
 
@@ -30,7 +32,10 @@ export class UserController {
   }
 
   @Patch(':id')
-  public updateUser( @Param('id', ParseIntPipe) userId: number, @Body() updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  public updateUser(
+    @Param('id', ParseIntPipe) userId: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UpdateResult> {
     return this.usersService.update(userId, updateUserDto);
   }
 

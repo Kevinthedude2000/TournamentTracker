@@ -4,20 +4,19 @@ import { User } from './user.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DeleteResult } from 'typeorm/driver/mongodb/typings';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
   public async get(userId: number): Promise<User | null> {
-    return await this.userRepository.findOneBy({ userId });
+    return await this.usersRepository.findOneBy({ userId });
   }
 
   public async getBy(emailAddress: string): Promise<User | null> {
-    return await this.userRepository.findOneBy({ emailAddress });
+    return await this.usersRepository.findOneBy({ emailAddress });
   }
 
   public async create(createUserDto: CreateUserDto): Promise<User> {
@@ -26,23 +25,34 @@ export class UsersService {
     user.lastName = createUserDto.lastName;
     user.emailAddress = createUserDto.email;
 
-    return await this.userRepository.save(user);
+    return await this.usersRepository.save(user);
   }
 
   public async update(
     userId: number,
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult> {
-    const user = new User();
-    console.log('updateUserDto: ', updateUserDto);
-    console.log('user: ', user);
-    user.firstName = updateUserDto.firstName;
-    user.lastName = updateUserDto.lastName;
+    if (updateUserDto.firstName || updateUserDto.lastName) {
+      const user = new User();
+      if (updateUserDto.firstName) {
+        user.firstName = updateUserDto.firstName;
+      }
+      if (updateUserDto.lastName) {
+        user.lastName = updateUserDto.lastName;
+      }
 
-    return await this.userRepository.update(userId, user);
+      return await this.usersRepository.update(userId, user);
+    } else {
+      // Create an empty update result for when no fields to update
+      const emptyResult = new UpdateResult();
+      emptyResult.affected = 0;
+      emptyResult.raw = {};
+      emptyResult.generatedMaps = [];
+      return emptyResult;
+    }
   }
 
   public async delet(userId: number): Promise<void> {
-    await this.userRepository.delete(userId);
+    await this.usersRepository.delete(userId);
   }
 }

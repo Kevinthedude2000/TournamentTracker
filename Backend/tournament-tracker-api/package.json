@@ -38,6 +38,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
+    "@golevelup/ts-jest": "^0.6.2",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
@@ -73,8 +74,23 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!**/*.module.ts",
+      "!**/main.ts",
+      "!**/index.ts",
+      "!**/*.dto.ts",
+      "!**/*.entity.ts",
+      "!**/node_modules/**",
+      "!**/dist/*"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
